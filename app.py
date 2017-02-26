@@ -76,8 +76,10 @@ def change_password(*args):
 
 
 def change_password_ldap(username, old_pass, new_pass):
-    with connect_ldap() as c:
-        user_dn = find_user_dn(c, username)
+    # with connect_ldap() as c:
+    #     user_dn = find_user_dn(c, username)
+
+    user_dn = 'uid={},{}'.format(username, CONF['ldap']['base']).encode('utf-8')
 
     # Note: raises LDAPUserNameIsMandatoryError when user_dn is None.
     with connect_ldap(authentication=SIMPLE, user=user_dn, password=old_pass) as c:
